@@ -15,8 +15,11 @@
         <input id="password" formControlName="password" type="password">
     </div>
 
-    <button type="submit">Registrati</button>
+    <div class="Tbutton">
+        <button type="submit" [disabled]="regForm.invalid">Conferma</button>
+    </div>
+
     <div>
-        Hai gia' un account? <a routerLink="/login">Log In</a>
+        Hai gia' un account? <a routerLink="/login">Login</a>
     </div>
 </form>
