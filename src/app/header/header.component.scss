@@ -1,0 +1,54 @@
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.Home {
+    flex-grow: 3;
+}
+
+.name{
+    font-size: 30px;
+    font-weight: 700;
+    color: #0079D3;
+    text-decoration: none;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login, .registrazione {
+    background-color: transparent;
+    border: 1px solid #0079D3;
+    color: #0079D3;
+    border-radius: 4px;
+    padding: 3px 16px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-left: 10px;
+    text-decoration: none;
+}
+
+.login:hover, .registrazione:hover {
+    opacity: 0.8;
+}
+
+.registrazione {
+    background-color: #0079D3;
+    border-color: #0079D3;
+    color: aliceblue;
+}
+

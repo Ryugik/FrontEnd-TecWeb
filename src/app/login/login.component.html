@@ -1,0 +1,22 @@
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <h1>Login</h1>
+
+    <div>
+        <label for="username">Username:</label>
+        <input id="username" formControlName="username" type="text">
+
+    </div>
+
+    <div>
+        <label for="password">Password:</label>
+        <input id="password" formControlName="password" type="password">
+    </div>
+
+    <div>
+        <button type="submit" [disabled]="loginForm.invalid">Conferma</button>
+    </div>
+    
+    <div>
+        <span>Nuovo utente? <a routerLink="/registrazione">Registrazione</a></span>
+    </div>
+</form>
