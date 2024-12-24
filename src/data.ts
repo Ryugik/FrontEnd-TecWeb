@@ -9,11 +9,9 @@
     description: string
     author: User
     createdAt: Date
-    creatorPost: User
     Likes: number
     Dislikes: number
     comments: Comment[]
-  
   }
   
   

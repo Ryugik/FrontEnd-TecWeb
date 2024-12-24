@@ -12,41 +12,35 @@ export class RestService {
   private http: HttpClient;
   private authService: AuthService;
 
-
   constructor(http: HttpClient, auth: AuthService) {
     this.http = http;
     this.authService = auth;
   }
 
-
   private getAuthHeaders() {
     const token = this.authService.getToken();
     if (token) {
-      return new HttpHeaders({'Autorizzazione': token})
+      return new HttpHeaders({ 'Autorizzazione': token as string });
     } else {
-      return new HttpHeaders()
+      return new HttpHeaders();
     }
   }
-
 
   login(credentials: { username: string; password: string }) {
     const url = `${this.baseUrl}/login`;
     return this.http.post(url, credentials, { headers: this.getAuthHeaders() });
   }
 
-
   logout() {
     const url = `${this.baseUrl}/logout`;
     const headers = this.getAuthHeaders(); 
     return this.http.post(url, {}, { headers });
   }
-  
 
   registrazione(credentials: { username: string; password: string }) {
     const url = `${this.baseUrl}/registrazione`;
     return this.http.post(url, credentials, { headers: this.getAuthHeaders() });
   }
-
 
   getPosts() {
     const url = `${this.baseUrl}/posts`;
@@ -57,7 +51,6 @@ export class RestService {
       })))
     );
   }
-
 
   getPostsByAge(days: number) {
     const url = `${this.baseUrl}/posts`;
@@ -70,7 +63,6 @@ export class RestService {
     );
   }
 
-
   getPostById(id: number) {
     const url = `${this.baseUrl}/posts/${id}`;
     return this.http.get<Post>(url).pipe(
@@ -81,13 +73,11 @@ export class RestService {
     );
   }
 
-
   createPost(title: string, description: string) {
     const url = `${this.baseUrl}/posts`;
     const headers = this.getAuthHeaders();
     return this.http.post(url, { title, description }, { headers });
   }
-
 
   deletePost(id: number) {
     const url = `${this.baseUrl}/posts/${id}`;
@@ -95,13 +85,11 @@ export class RestService {
     return this.http.delete(url, { headers });
   }
 
-
   votePost(id: number, type: 'Like' | 'Dislike') {
     const url = `${this.baseUrl}/posts/${id}/votes`;
     const headers = this.getAuthHeaders();
     return this.http.post(url, { type }, { headers });
   }
-
 
   removeVote(id: number) {
     const url = `${this.baseUrl}/posts/${id}/votes`;
@@ -109,19 +97,16 @@ export class RestService {
     return this.http.delete(url, { headers });
   }
 
-
   getComments(postId: number) {
     const url = `${this.baseUrl}/posts/${postId}/comments`;
     return this.http.get<Comment[]>(url);
   }
-
 
   addComment(postId: number, body: string) {
     const url = `${this.baseUrl}/posts/${postId}/comments`;
     const headers = this.getAuthHeaders();
     return this.http.post(url, { body }, { headers });
   }
-
 
   getUserVote(postId: number) {
     const url = `${this.baseUrl}/posts/${postId}/votes`;
@@ -131,20 +116,17 @@ export class RestService {
     );
   }
 
-
   voteComment(commentId: number, type: 'Like' | 'Dislike') {
     const url = `${this.baseUrl}/comments/${commentId}/votes`;
     const headers = this.getAuthHeaders();
     return this.http.post(url, { type }, { headers });
   }
 
-
   removeCommentVote(commentId: number) {
     const url = `${this.baseUrl}/comments/${commentId}/votes`;
     const headers = this.getAuthHeaders();
     return this.http.delete(url, { headers });
   }
-
 
   getCommentVote(commentId: number) {
     const url = `${this.baseUrl}/comments/${commentId}/votes`;
@@ -153,5 +135,4 @@ export class RestService {
       catchError(() => EMPTY)
     );
   }
-
 }

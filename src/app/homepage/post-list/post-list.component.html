@@ -1,0 +1,32 @@
+<div class="sort">
+  <button [class.selected]="currentSortFunction === sortBy.mostControversial" (click)="sortPosts(sortBy.mostControversial)">Piu' Controversi</button>
+  <button [class.selected]="currentSortFunction === sortBy.mostPopular" (click)="sortPosts(sortBy.mostPopular)">Piu' Popolari</button>
+  <button [class.selected]="currentSortFunction === sortBy.mostUnpopular" (click)="sortPosts(sortBy.mostUnpopular)">Meno Popolari</button>
+  <button [class.selected]="currentSortFunction === sortBy.mostRecent" (click)="sortPosts(sortBy.mostRecent)">Piu' Recenti</button>
+</div>
+
+<div class="post-list">
+  <div *ngIf="currPagePosts.length === 0" class="no-posts-message">
+    Non c'è ancora nessun post, inizia tu una discussione!
+  </div>
+
+  <div *ngFor="let post of currPagePosts" class="post">
+    <app-vote-post-homepage [post]="post"></app-vote-post-homepage>
+    <h2>{{ post.title }}</h2>
+    <p>Posted by {{ post.author.username }} on {{ post.createdAt | date:'medium' }}</p>
+    <p>{{ post.description }}</p>
+    <div class="post-actions">
+      <span class="comments">Comments: {{ post.comments.length }}</span>
+    </div>
+  </div>
+</div>
+
+<div class="create-post-link">
+  <a routerLink="/crea-post">Crea un Post!</a>
+</div>
+
+<div class="swap-page">
+  <button (click)="pageLeft()">Precedente</button>
+  <span class="current-page">{{currPage}}</span>
+  <button (click)="pageRight()">Successiva</button>
+</div>

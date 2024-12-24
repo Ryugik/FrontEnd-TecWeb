@@ -1,0 +1,120 @@
+.sort {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+  
+    button {
+      background-color: #1a73e8; 
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+  
+      &.selected {
+        background-color: #1558b0; 
+      }
+  
+      &:hover {
+        background-color: #1558b0; 
+      }
+    }
+  }
+  
+  .post-list {
+    .no-posts-message {
+      text-align: center;
+      font-size: 18px;
+      color: #555;
+      margin: 20px 0;
+    }
+  
+    .post {
+      background-color: #f9f9f9; 
+      border: 1px solid #ddd; 
+      border-radius: 4px;
+      margin-bottom: 20px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  
+      h2 {
+        font-size: 24px;
+        color: #1a73e8; 
+        margin-bottom: 10px;
+      }
+  
+      p {
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 10px;
+      }
+  
+      .post-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 10px;
+  
+        .comments {
+          font-size: 14px;
+          color: #1a73e8; 
+        }
+      }
+    }
+  }
+  
+  .create-post-link {
+    text-align: center;
+    margin: 20px 0;
+  
+    a {
+      background-color: #1a73e8; 
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+  
+      &:hover {
+        background-color: #1558b0; 
+      }
+    }
+  }
+  
+  .swap-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  
+    button {
+      background-color: #1a73e8; 
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+  
+      &:hover {
+        background-color: #1558b0; 
+      }
+    }
+  
+    .current-page {
+      font-size: 24px;
+      margin: 0 10px;
+      color: #000000; 
+    }
+  }
