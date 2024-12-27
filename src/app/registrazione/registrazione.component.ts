@@ -17,8 +17,8 @@ export class RegistrazioneComponent {
   private router = inject(Router);
   private toastr = inject(ToastrService);
   regForm = new FormGroup({
-    username: new FormControl('', Validators.compose([Validators.required, Validators.minLength(1)])),
-    password: new FormControl('', Validators.compose([Validators.required, Validators.minLength(1)])) 
+    username: new FormControl('', [Validators.required, Validators.minLength(1)]),
+    password: new FormControl('', [Validators.required, Validators.minLength(1)]) 
   });
 
 
@@ -29,10 +29,10 @@ export class RegistrazioneComponent {
     } else {
 
     const regPayload = {
-      username: this.regForm.get('username')?.value as string,
-      password: this.regForm.get('password')?.value as string
+      username: this.regForm.value.username as string,
+      password: this.regForm.value.password as string
     };
-
+    console.log("terzo penesrnello");
     this.authService.registrazione(regPayload).subscribe({
       next: () => {
       this.isError = false;

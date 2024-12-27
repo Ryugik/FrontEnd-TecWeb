@@ -1,15 +1,15 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RestService } from '../../services/rest/rest.service';
 import { Post } from '../../../data';
-import { RouterLink, RouterLinkActive, Router } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
 import { VotePostHomepageComponent } from "../vote-post-homepage/vote-post-homepage.component";
 
 @Component({
   selector: 'app-post-list',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive, VotePostHomepageComponent],
+  imports: [CommonModule, RouterLink, VotePostHomepageComponent],
   templateUrl: './post-list.component.html',
   styleUrls: ['./post-list.component.scss'] 
 })

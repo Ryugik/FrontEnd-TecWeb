@@ -1,15 +1,21 @@
 <header>
     <nav class="navbar">
-        <div class="Home">
+        <div class="home">
             <a aria-label="Home" class="logo" routerLink="/">
                 <span class="name">
                     HiveMind
                 </span>
             </a>
         </div>
-            <div class="buttons">
+        <div class="buttons">
+            <ng-container *ngIf="auth.checkAuth(); else notLoggedIn">
+                <span>Benvenuto {{ auth.getUsername() }}!</span>
+                <button (click)="logout()" class="logout">Logout</button>
+            </ng-container>
+            <ng-template #notLoggedIn>
                 <a routerLink="/registrazione" class="registrazione">Registrati</a>
                 <a routerLink="/login" class="login">Login</a>
-            </div>
+            </ng-template>
+        </div>
     </nav>
 </header>

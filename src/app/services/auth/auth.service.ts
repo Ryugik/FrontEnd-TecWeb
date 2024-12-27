@@ -56,30 +56,21 @@ export class AuthService {
   login(credentials: { username: string; password: string }) {
     const rest = this.injector.get(RestService);
     const request = rest.login(credentials);
-  
-    request.pipe(catchError(() => EMPTY)).subscribe((response: any) => {
-      if (response && response.token) {
-        this.setToken(response.token); 
-      } else {
-        console.error('Token non presente nella risposta');
+  console.log("er secondo penesrnello");
+    request.pipe(catchError(() => EMPTY)).subscribe({
+      next: (token) => {
+        this.setToken(token);
       }
     });
 
     return request;
   }
-  
+
 
   logout() {
-    const rest = this.injector.get(RestService);
-  
-    const request = rest.logout(); 
-    request.pipe(catchError(() => EMPTY)).subscribe(() => {
-      this.authState.user = null;   
-      this.authState.token = null; 
-      localStorage.removeItem('token'); 
-    });
-  
-    return request;
+        this.authState.user = null;
+        this.authState.token = null;
+        localStorage.removeItem('token');
   }
 
 
@@ -87,14 +78,11 @@ export class AuthService {
     const rest = this.injector.get(RestService);
     const request = rest.registrazione(credentials);
   
-    request.pipe(catchError(() => EMPTY)).subscribe((response: any) => {
-      if (response && response.token) {
-        this.setToken(response.token);
-      } else {
-        console.error('Token non presente nella risposta');
+    request.pipe(catchError(() => EMPTY)).subscribe({
+      next: (token) => {
+        this.setToken(token);
       }
     });
-  
     return request;
   }
   

@@ -28,6 +28,7 @@
     postedOnId: number
     authorComment: User
     postedOn: Post
+    createdAt: Date
     voteComment: VoteComment[]
   }
   

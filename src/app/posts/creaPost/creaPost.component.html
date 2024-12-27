@@ -1,0 +1,18 @@
+<hr class="lineaLOL" />
+<div class="creaPost">
+  <h2>Crea un Post</h2>
+  <form [formGroup]="postForm" (ngSubmit)="onSubmit()">
+    <div class="post">
+      <label for="title">Titolo (max 140 caratteri)</label>
+      <input type="text" id="title" formControlName="title" required>
+    </div>
+    <div class="post">
+      <label for="body">Descrizione (max 400 caratteri)</label>
+      <textarea id="body" formControlName="body" required></textarea>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="pubblica">Pubblica</button>
+      <button type="button" class="annulla" (click)="onCancel()">Annulla</button>
+    </div>
+  </form>
+</div>

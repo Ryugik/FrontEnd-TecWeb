@@ -1,0 +1,25 @@
+:host {
+    padding-left: 1em;
+    padding-bottom: 1em;
+    text-wrap: wrap;
+    word-wrap: break-word;
+    white-space: normal;
+    display: block;
+  }
+  
+  .comment {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .comment-author {
+    font-weight: bold;
+    color: #0079D3;
+  }
+  
+  .comment-text {
+    color: #333;
+  }

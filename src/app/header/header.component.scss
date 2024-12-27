@@ -11,7 +11,7 @@ header {
     width: 100%;
 }
 
-.Home {
+.home {
     flex-grow: 3;
 }
 
@@ -29,9 +29,7 @@ header {
 }
 
 .login, .registrazione {
-    background-color: transparent;
     border: 1px solid #0079D3;
-    color: #0079D3;
     border-radius: 4px;
     padding: 3px 16px;
     text-align: center;
@@ -42,12 +40,38 @@ header {
     text-decoration: none;
 }
 
-.login:hover, .registrazione:hover {
+.login {
+    background-color: transparent;
+    color: #0079D3;
+}
+
+.login:hover {
     opacity: 0.8;
 }
 
 .registrazione {
     background-color: #0079D3;
-    border-color: #0079D3;
-    color: aliceblue;
+    color: #fff;
+}
+
+.registrazione:hover {
+    opacity: 0.8;
+}
+
+.logout {
+    background-color: #0079D3;
+    border: none;
+    color: #fff;
+    border-radius: 4px;
+    padding: 3px 16px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.logout:hover {
+    opacity: 0.8;
 }

@@ -1,42 +1,29 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
-import { Post } from '../../../data';
+import { Comment } from '../../../data';
 import { RestService } from '../../services/rest/rest.service';
 import { AuthService } from '../../services/auth/auth.service';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-vote-post-homepage',
+  selector: 'app-vote-comment',
   standalone: true,
-  templateUrl: './vote-post-homepage.component.html',
-  styleUrls: ['./vote-post-homepage.component.scss']
+  templateUrl: './vote-comment.component.html',
+  styleUrls: ['./vote-comment.component.scss']
 })
-export class VotePostHomepageComponent implements OnInit {
+export class VoteCommentComponent implements OnInit {
+  @Input() comment!: Comment;
+
+  userVote: "Like" | "Dislike" | null = null;
+  likes = 0;
+  dislikes = 0;
+
   private rest = inject(RestService);
   private auth = inject(AuthService);
   private router = inject(Router);
-  private toastr = inject(ToastrService);
-
-  @Input() post: Post = {
-    idPost: 20,
-    title: "Title",
-    description: "Description",
-    Likes: 0,
-    Dislikes: 0,
-    createdAt: new Date(Date.now()),
-    author: {
-      username: "Test User"
-    },
-    comments: []
-  };
-
-  userVote: "Like" | "Dislike" | null = null;
-  upvotes = 0;
-  downvotes = 0;
 
   ngOnInit() {
     this.updateVoteCounts();
-    this.rest.getUserVote(this.post.idPost).subscribe({
+    this.rest.getCommentVote(this.comment.idComment).subscribe({
       next: (vote) => {
         if (vote.type === "Like" || vote.type === "Dislike") {
           this.userVote = vote.type;
@@ -48,21 +35,24 @@ export class VotePostHomepageComponent implements OnInit {
   }
 
   updateVoteCounts() {
-    this.upvotes = this.post.Likes;
-    this.downvotes = this.post.Dislikes;
+    this.likes = this.comment.voteComment.filter(vote => vote.type === "Like").length;
+    this.dislikes = this.comment.voteComment.filter(vote => vote.type === "Dislike").length;
   }
 
-  upvotePost() {
+  likeComment() {
     if (!this.auth.checkAuth()) {
-      this.toastr.error("Fai il login prima di mettere mi piace");
       this.router.navigate(['/login']);
       return;
     }
-    this.rest.votePost(this.post.idPost, "Like").subscribe({
+    if (this.userVote === "Like") {
+      this.removeVote();
+      return;
+    }
+    this.rest.voteComment(this.comment.idComment, "Like").subscribe({
       next: () => {
-        this.post.Likes++;
+        this.likes++;
         if (this.userVote === "Dislike") {
-          this.post.Dislikes--;
+          this.dislikes--;
         }
         this.userVote = "Like";
         this.updateVoteCounts();
@@ -70,17 +60,20 @@ export class VotePostHomepageComponent implements OnInit {
     });
   }
 
-  downvotePost() {
+  dislikeComment() {
     if (!this.auth.checkAuth()) {
-      this.toastr.error("Fai il login prima di mettere non mi piace");
       this.router.navigate(['/login']);
       return;
     }
-    this.rest.votePost(this.post.idPost, "Dislike").subscribe({
+    if (this.userVote === "Dislike") {
+      this.removeVote();
+      return;
+    }
+    this.rest.voteComment(this.comment.idComment, "Dislike").subscribe({
       next: () => {
-        this.post.Dislikes++;
+        this.dislikes++;
         if (this.userVote === "Like") {
-          this.post.Likes--;
+          this.likes--;
         }
         this.userVote = "Dislike";
         this.updateVoteCounts();
@@ -89,13 +82,13 @@ export class VotePostHomepageComponent implements OnInit {
   }
 
   removeVote() {
-    this.rest.removeVote(this.post.idPost).subscribe({
+    this.rest.removeCommentVote(this.comment.idComment).subscribe({
       next: () => {
         if (this.userVote === "Like") {
-          this.post.Likes--;
+          this.likes--;
         }
         if (this.userVote === "Dislike") {
-          this.post.Dislikes--;
+          this.dislikes--;
         }
         this.userVote = null;
         this.updateVoteCounts();

@@ -1,0 +1,11 @@
+<div class="vote-comment">
+    <div class="vote-box">
+      <div class="like-dislike">
+        <span (click)="likeComment()" class="like" [style.color]="userVote === 'Like' ? 'green' : ''">▲</span>
+      </div>
+      <div class="vote-comment-count">{{ likes - dislikes }}</div>
+      <div class="like-dislike">
+        <span (click)="dislikeComment()" class="dislike" [style.color]="userVote === 'Dislike' ? 'red' : ''">▼</span>
+      </div>
+    </div>
+  </div>

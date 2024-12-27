@@ -28,18 +28,19 @@ export class RestService {
 
   login(credentials: { username: string; password: string }) {
     const url = `${this.baseUrl}/login`;
-    return this.http.post(url, credentials, { headers: this.getAuthHeaders() });
+    return this.http.post<string>(url, credentials, { headers: this.getAuthHeaders() });
   }
 
   logout() {
     const url = `${this.baseUrl}/logout`;
     const headers = this.getAuthHeaders(); 
-    return this.http.post(url, {}, { headers });
+    return this.http.post<string>(url, {}, { headers });
   }
 
   registrazione(credentials: { username: string; password: string }) {
     const url = `${this.baseUrl}/registrazione`;
-    return this.http.post(url, credentials, { headers: this.getAuthHeaders() });
+    console.log("quarto penesrnello");
+    return this.http.post<string>(url, credentials, { headers: this.getAuthHeaders() });
   }
 
   getPosts() {
