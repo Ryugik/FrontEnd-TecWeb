@@ -1,4 +1,4 @@
-<hr class="lineaLOL" />
+<hr />
 <div class="creaPost">
   <h2>Crea un Post</h2>
   <form [formGroup]="postForm" (ngSubmit)="onSubmit()">
@@ -7,8 +7,8 @@
       <input type="text" id="title" formControlName="title" required>
     </div>
     <div class="post">
-      <label for="body">Descrizione (max 400 caratteri)</label>
-      <textarea id="body" formControlName="body" required></textarea>
+      <label for="description">Descrizione (max 400 caratteri)</label>
+      <textarea type="text" id="description" formControlName="description" required ></textarea>
     </div>
     <div class="form-actions">
       <button type="submit" class="pubblica">Pubblica</button>

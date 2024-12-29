@@ -1,4 +1,31 @@
-<div class="comment">
-    <strong class="comment-author">{{comment.authorComment.username}}</strong>: 
-    <span class="comment-text">{{comment.body}}</span>
-</div>
+<div class="sort">
+    <button [class.selected]="currentSortFunction === sortBy.mostControversial" (click)="sortComments(sortBy.mostControversial)">Piu' Controversi</button>
+    <button [class.selected]="currentSortFunction === sortBy.mostPopular" (click)="sortComments(sortBy.mostPopular)">Piu' Popolari</button>
+    <button [class.selected]="currentSortFunction === sortBy.mostUnpopular" (click)="sortComments(sortBy.mostUnpopular)">Meno Popolari</button>
+    <button [class.selected]="currentSortFunction === sortBy.mostRecent" (click)="sortComments(sortBy.mostRecent)">Piu' Recenti</button>
+  </div>
+  
+  <div class="post-list">
+    <div *ngIf="currPageComments.length === 0" class="no-comments-message">
+      Non c'è ancora nessun commento, puoi essere tu il primo!
+    </div>
+  
+    <div *ngFor="let postComments of currPageComments" class="post-container">
+
+     <app-vote-comment [comment]="postComments"></app-vote-comment>
+
+      <div class="post-content">
+<!--        <h1 class="body">{{post.title}} </h1>
+        <p>Da {{ post.author.username }} il {{ post.createdAt | date:'short' }}</p>
+        <p>{{ post.description }}</p>-->
+      </div>
+    </div>
+  </div>
+  
+  <button (click)="this.router.navigateByUrl('/posts/' + this.id + '/comments/crea-commento')" class="comments">Scrivi un commento</button>
+  
+  <div class="swap-page">
+    <button (click)="pageLeft()">Precedente</button>
+    <span class="current-page">{{currPage}}</span>
+    <button (click)="pageRight()">Successiva</button>
+  </div>

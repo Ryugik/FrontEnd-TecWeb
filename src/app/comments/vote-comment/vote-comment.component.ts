@@ -1,42 +1,49 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { Comment } from '../../../data';
-import { RestService } from '../../services/rest/rest.service';
-import { AuthService } from '../../services/auth/auth.service';
+import { RestService } from '../../!services/rest/rest.service';
+import { AuthService } from '../../!services/auth/auth.service';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-vote-comment',
   standalone: true,
+  imports: [CommonModule],
   templateUrl: './vote-comment.component.html',
   styleUrls: ['./vote-comment.component.scss']
 })
 export class VoteCommentComponent implements OnInit {
-  @Input() comment!: Comment;
-
-  userVote: "Like" | "Dislike" | null = null;
-  likes = 0;
-  dislikes = 0;
 
   private rest = inject(RestService);
   private auth = inject(AuthService);
   private router = inject(Router);
+  private toastr = inject(ToastrService);
+
+  @Input() comment: Comment = {
+    idComment: 30,
+    body: "test",
+    authorComment: { username: "userr" },
+    createdAt: new Date(Date.now()),
+    counter: 0,
+    voteComment: [],
+  } as Comment;
+
+
+  userVote: number | null = null;
 
   ngOnInit() {
-    this.updateVoteCounts();
+
+
     this.rest.getCommentVote(this.comment.idComment).subscribe({
-      next: (vote) => {
-        if (vote.type === "Like" || vote.type === "Dislike") {
-          this.userVote = vote.type;
-        } else {
-          this.userVote = null;
-        }
+      next: (response) => {
+        const { votes, counter } = response;
+        this.comment.counter = counter;
+        const userVote = votes.find(voteComment => voteComment.voterComUsername === this.auth.getUsername());
+        this.userVote = userVote ? userVote.type : null;
       }
     });
-  }
-
-  updateVoteCounts() {
-    this.likes = this.comment.voteComment.filter(vote => vote.type === "Like").length;
-    this.dislikes = this.comment.voteComment.filter(vote => vote.type === "Dislike").length;
   }
 
   likeComment() {
@@ -44,18 +51,14 @@ export class VoteCommentComponent implements OnInit {
       this.router.navigate(['/login']);
       return;
     }
-    if (this.userVote === "Like") {
+    if (this.userVote === 1) {
       this.removeVote();
       return;
     }
-    this.rest.voteComment(this.comment.idComment, "Like").subscribe({
+    this.rest.voteComment(this.comment.idComment, 1).subscribe({
       next: () => {
-        this.likes++;
-        if (this.userVote === "Dislike") {
-          this.dislikes--;
-        }
-        this.userVote = "Like";
-        this.updateVoteCounts();
+        this.comment.counter += (this.userVote === -1) ? 2 : 1;
+        this.userVote = 1;
       }
     });
   }
@@ -65,18 +68,14 @@ export class VoteCommentComponent implements OnInit {
       this.router.navigate(['/login']);
       return;
     }
-    if (this.userVote === "Dislike") {
+    if (this.userVote === -1) {
       this.removeVote();
       return;
     }
-    this.rest.voteComment(this.comment.idComment, "Dislike").subscribe({
+    this.rest.voteComment(this.comment.idComment, -1).subscribe({
       next: () => {
-        this.dislikes++;
-        if (this.userVote === "Like") {
-          this.likes--;
-        }
-        this.userVote = "Dislike";
-        this.updateVoteCounts();
+        this.comment.counter -= (this.userVote === 1) ? 2 : 1;
+        this.userVote = -1;
       }
     });
   }
@@ -84,14 +83,8 @@ export class VoteCommentComponent implements OnInit {
   removeVote() {
     this.rest.removeCommentVote(this.comment.idComment).subscribe({
       next: () => {
-        if (this.userVote === "Like") {
-          this.likes--;
-        }
-        if (this.userVote === "Dislike") {
-          this.dislikes--;
-        }
+        this.comment.counter += (this.userVote === 1) ? -1 : 1;
         this.userVote = null;
-        this.updateVoteCounts();
       }
     });
   }

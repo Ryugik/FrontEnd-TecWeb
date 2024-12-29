@@ -1,0 +1,12 @@
+<hr />
+<div class="creaCommento">
+  <h2>Stai lasciando un commento nel post di {{ username }}: {{ title }}!</h2>
+  <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+    <label for="body">Commento: (max 400 caratteri)</label>
+    <textarea id="body" formControlName="body" required></textarea>
+    <div class="form-actions">
+      <button type="submit" class="pubblica">Pubblica</button>
+      <button type="button" class="annulla" (click)="onCancel()">Annulla</button>
+    </div>
+  </form>
+</div>

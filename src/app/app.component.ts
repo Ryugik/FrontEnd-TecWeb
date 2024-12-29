@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
-import { AuthService } from './services/auth/auth.service';
+import { AuthService } from './!services/auth/auth.service';
 import { Location } from '@angular/common';
 
 @Component({

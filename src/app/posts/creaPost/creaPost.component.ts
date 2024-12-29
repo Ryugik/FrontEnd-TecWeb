@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { RestService } from '../../services/rest/rest.service'; 
+import { RestService } from '../../!services/rest/rest.service'; 
 import { ToastrService } from 'ngx-toastr';
-import * as showdown from 'showdown';
+import showdown from 'showdown';
 
 @Component({
   selector: 'app-crea-post',
@@ -14,7 +14,6 @@ import * as showdown from 'showdown';
 })
 export class CreaPostComponent {
   postForm: FormGroup;
-  selectedFile: File | null = null;
   private converter = new showdown.Converter();
 
   constructor(
@@ -25,7 +24,7 @@ export class CreaPostComponent {
   ) {
     this.postForm = this.formBuilder.group({
       title: ['', [Validators.required, Validators.maxLength(140)]],
-      body: ['', [Validators.required, Validators.maxLength(400)]]
+      description: ['', [Validators.required, Validators.maxLength(400)]]
     });
   }
 
@@ -35,10 +34,10 @@ export class CreaPostComponent {
       return;
     }
 
-    const { title, body } = this.postForm.value;
-    const parsedBody = this.converter.makeHtml(body);
-
-    this.restService.createPost(title, parsedBody).subscribe({
+    const title = this.postForm.value.title as string;
+    const description = this.postForm.value.description as string;
+    console.log("il penesrnello salvatempo"); 
+    this.restService.createPost({ title, description }).subscribe({
       next: () => {
         this.toastr.success('Post creato con successo!');
         this.router.navigateByUrl(``);

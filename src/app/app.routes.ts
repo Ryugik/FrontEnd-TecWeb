@@ -4,6 +4,9 @@ import { LoginComponent } from './login/login.component';
 import { RegistrazioneComponent } from './registrazione/registrazione.component';
 import { CreaPostComponent } from './posts/creaPost/creaPost.component';
 import { LogoutComponent } from './logout/logout.component';
+import { VotePostHomepageComponent } from './homepage/vote-post-homepage/vote-post-homepage.component';
+import { CreaCommentoComponent } from './comments/crea-commento/crea-commento.component';
+import { CommentComponent } from './comments/comment/comment.component';
 
 export const routes: Routes = [
 
@@ -17,5 +20,10 @@ export const routes: Routes = [
 
   { path: 'logout', component: LogoutComponent },
   
-  { path: 'post/:idPost', component: CreaPostComponent }
+  { path: 'posts', component: CreaPostComponent },
+
+  { path: 'posts/:idPost/comments', component: CommentComponent },
+
+  { path: 'posts/:idPost/comments/crea-commento', component: CreaCommentoComponent },
+
 ];

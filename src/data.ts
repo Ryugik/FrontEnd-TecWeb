@@ -9,14 +9,13 @@
     description: string
     author: User
     createdAt: Date
-    Likes: number
-    Dislikes: number
+    counter: number
     comments: Comment[]
   }
   
   
   export type Vote = {
-    type: "Like" | "Dislike" | 0
+    type: number
     voterUsername: string
     post: Post
   }
@@ -25,16 +24,15 @@
   export type Comment = {
     idComment: number 
     body: string
-    postedOnId: number
     authorComment: User
-    postedOn: Post
+    postedOn?: Post
     createdAt: Date
-    voteComment: VoteComment[]
+    counter: number
   }
   
   
   export type VoteComment = {
-    type: "Like" | "Dislike" | 0
+    type: number
     voterComUsername: string
     commentId: number      
     voter: User   

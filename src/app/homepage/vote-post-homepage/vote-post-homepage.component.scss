@@ -1,0 +1,36 @@
+.vote-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: Arial, sans-serif;
+}
+
+.vote-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px;
+  min-height: 100px; 
+}
+
+.like, .dislike {
+  cursor: pointer;
+  font-size: 24px;
+  transition: color 0.3s;
+  padding: 5px;
+}
+
+.like:hover {
+  color: RoyalBlue;
+}
+
+.dislike:hover {
+  color: LightBlue;
+}
+
+.votes {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 5px 0;
+  color: #333;
+}

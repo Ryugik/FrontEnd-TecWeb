@@ -10,13 +10,16 @@
     Non c'è ancora nessun post, inizia tu una discussione!
   </div>
 
-  <div *ngFor="let post of currPagePosts" class="post">
+  <div *ngFor="let post of currPagePosts" class="post-container">
     <app-vote-post-homepage [post]="post"></app-vote-post-homepage>
-    <h2>{{ post.title }}</h2>
-    <p>Posted by {{ post.author.username }} on {{ post.createdAt | date:'medium' }}</p>
-    <p>{{ post.description }}</p>
-    <div class="post-actions">
-      <span class="comments">Comments: {{ post.comments.length }}</span>
+    <div class="post-content">
+      <h1 class="title">{{post.title}} </h1>
+      <p>Da {{ post.author.username }} il {{ post.createdAt | date:'short' }}</p>
+      <p>{{ post.description }}</p>
+      <div class="post-actions">
+        <span class="comments">Commenti: {{ post.comments.length }}</span>
+        <button (click)="this.router.navigateByUrl('/posts/' + post.idPost + '/comments')" class="comments">Visualizza Commenti</button>
+      </div>
     </div>
   </div>
 </div>

@@ -1,14 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
+/**import { Component, Input, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../services/auth/auth.service';
-import { RestService } from '../../services/rest/rest.service';
+import { AuthService } from '../../!services/auth/auth.service';
+import { RestService } from '../../!services/rest/rest.service';
 import { Post, Comment } from '../../../data';
-import { marked } from 'marked';
-import { formatDistanceToNow } from 'date-fns';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CommentComponent } from '../../comments/comment/comment.component';
 import { VoteCommentComponent } from '../../comments/vote-comment/vote-comment.component';
+import {}
 
 @Component({
   selector: 'app-vedi-post',
@@ -18,110 +17,119 @@ import { VoteCommentComponent } from '../../comments/vote-comment/vote-comment.c
   styleUrls: ['./vedi-post.component.scss']
 })
 export class VediPostComponent implements OnInit {
-  @Input() post: Post = {
-      idPost: 1,
-      title: "Titolo",
-      description: "descr",
-      author: {username: "User"},
-      createdAt: new Date(Date.now()),
-      Likes: 0,
-      Dislikes: 0,
-      comments: []
-    } as Post;
+
+  post: Post = {
+    idPost: 6,
+    title: "test",
+    description: "test23",
+    counter: 0,
+    createdAt: new Date(Date.now()),
+    author: { username: "userr" },
+    comments: []
+  };
+
 
   postComments: Comment[] = [];
-  userVote: string | null = null;
-  likePercent: number = 0;
-  dislikePercent: number = 0;
-  parsedDescription: string = '';
-  relativeTime: string = '';
+  userVote: number | null = null;
 
-  constructor(
-    public auth: AuthService,
-    private rest: RestService,
-    private router: Router,
-    private toastr: ToastrService
-  ) {}
+
+    public auth = inject(AuthService);
+    private rest = inject(RestService);
+    private router = inject(Router);
+    private toastr = inject(ToastrService)
+    private actRoute = inject(ActivatedRoute);
+
 
   ngOnInit() {
-    this.updateVoteCounts();
+    const postID = this.actRoute.snapshot.params['id'];
+    this.rest.getPostById(postID).subscribe({
+      next: (post) => {
+        this.post = post;
+      }
+    });
     this.loadComments();
-    this.parsedDescription = marked(this.post.description) as string;
-    this.relativeTime = formatDistanceToNow(new Date(this.post.createdAt), { addSuffix: true });
+
+    this.rest.getUserVote(this.post.idPost).subscribe({
+      next: (response) => {
+        const { votes, counter } = response;
+        this.post.counter = counter;
+        const userVote = votes.find(vote => vote.voterUsername === this.auth.getUsername());
+        this.userVote = userVote ? userVote.type : null;
+      }      
+    });
+
   }
 
-  updateVoteCounts() {
-    const totalVotes = this.post.Likes + this.post.Dislikes;
-    this.likePercent = (this.post.Likes / totalVotes) * 100;
-    this.dislikePercent = (this.post.Dislikes / totalVotes) * 100;
-  }
 
   loadComments() {
     this.rest.getComments(this.post.idPost).subscribe((comments) => {
       this.postComments = comments.map(comment => ({
         ...comment,
-        relativeTime: formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })
+        relativeTime: new Date(comment.createdAt).toLocaleDateString()
       }));
     });
   }
+
 
   onLikePost() {
     if (!this.auth.checkAuth()) {
       this.router.navigate(['/login']);
       return;
     }
-    this.rest.votePost(this.post.idPost, 'Like').subscribe(() => {
-      this.post.Likes++;
-      if (this.userVote === 'Dislike') {
-        this.post.Dislikes--;
-      }
-      this.userVote = 'Like';
-      this.updateVoteCounts();
+    if (this.userVote === 1) {
+      this.onCancelVote();
+      return;
+    }
+    this.rest.votePost(this.post.idPost, 1).subscribe(() => {
+      this.post.counter += (this.userVote === -1) ? 2 : 1;
+      this.userVote = 1;
     });
   }
+
 
   onDislikePost() {
     if (!this.auth.checkAuth()) {
       this.router.navigate(['/login']);
       return;
     }
-    this.rest.votePost(this.post.idPost, 'Dislike').subscribe(() => {
-      this.post.Dislikes++;
-      if (this.userVote === 'Like') {
-        this.post.Likes--;
-      }
-      this.userVote = 'Dislike';
-      this.updateVoteCounts();
+    if (this.userVote === -1) {
+      this.onCancelVote();
+      return;
+    }
+    this.rest.votePost(this.post.idPost, -1).subscribe(() => {
+    this.userVote = -1;
+    this.post.counter -= (this.userVote === 1) ? 2 : 1;
     });
   }
 
+
   onCancelVote() {
     this.rest.removeVote(this.post.idPost).subscribe(() => {
-      if (this.userVote === 'Like') {
-        this.post.Likes--;
-      }
-      if (this.userVote === 'Dislike') {
-        this.post.Dislikes--;
-      }
-      this.userVote = null;
-      this.updateVoteCounts();
+    this.post.counter += (this.userVote === 1) ? -1 : 1;
+    this.userVote = null;
     });
   }
 
   onDeletePost() {
-    this.rest.deletePost(this.post.idPost).subscribe(() => {
-      this.toastr.success('Post eliminato con successo!');
-      this.router.navigate(['/']);
-    }, error => {
-      this.toastr.error('Errore durante l\'eliminazione del post. Riprova.');
+    this.rest.deletePost(this.post.idPost).subscribe({
+      next: () => {
+        this.toastr.success('Post eliminato con successo!');
+        this.router.navigate(['/']);
+      },
+      error: (error) => {
+        this.toastr.error('Errore durante l\'eliminazione del post. Riprova.');
+      }
     });
   }
+
 
   updateComments() {
     this.loadComments();
   }
+  
 
-  trackByCommentId(comment: Comment) {
+  trackByCommentId(index: number, comment: Comment) {
     return comment.idComment;
   }
+
 }

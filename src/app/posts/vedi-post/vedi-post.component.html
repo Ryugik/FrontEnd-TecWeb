@@ -1,31 +1,28 @@
-<hr class="linea2" />
+<hr />
 <div class="post-container">
   <div class="post-header">
     <h1 id="title">{{ post.title }}</h1>
     <div class="post-info">
       <div>
-        Postato da {{ post.author.username }} il {{ post.createdAt | date: 'shortDate' }}, {{ relativeTime }}
+        Postato da {{ post.author.username }} il {{ post.createdAt | date: 'shortDate' }}
         <button *ngIf="auth.getUsername() === post.author.username" class="delete-post" (click)="onDeletePost()">
         </button>
       </div>
     </div>
   </div>
   <div class="post-body">
-    <p id="description" [innerHTML]="parsedDescription"></p>
+    {{ post.description }}
   </div>
   <div class="post-footer">
     <div class="vote-buttons" *ngIf="post.author.username !== auth.getUsername()">
-      <button *ngIf="userVote !== 'Like'" class="like-button" (click)="onLikePost()"></button>
-      <button *ngIf="userVote === 'Like'" class="like-button" (click)="onCancelVote()"></button>
-      <button *ngIf="userVote !== 'Dislike'" class="dislike-button" (click)="onDislikePost()"></button>
-      <button *ngIf="userVote === 'Dislike'" class="dislike-button" (click)="onCancelVote()"></button>
+      <button *ngIf="userVote !== 1" class="like-button" (click)="onLikePost()"></button>
+      <button *ngIf="userVote === 1" class="like-button" (click)="onCancelVote()"></button>
+      <button *ngIf="userVote !== -1" class="dislike-button" (click)="onDislikePost()"></button>
+      <button *ngIf="userVote === -1" class="dislike-button" (click)="onCancelVote()"></button>
     </div>
     <div class="vote-bar">
-      <div class="likes">
-        <div>{{ post.Likes }}</div>
-      </div>
-      <div class="dislikes">
-        <div>{{ post.Dislikes }}</div>
+      <div class="counter">
+        <div>{{ post.counter}}</div>
       </div>
     </div>
     <div class="comment-section">

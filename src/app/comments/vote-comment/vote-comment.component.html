@@ -1,11 +1,7 @@
-<div class="vote-comment">
-    <div class="vote-box">
-      <div class="like-dislike">
-        <span (click)="likeComment()" class="like" [style.color]="userVote === 'Like' ? 'green' : ''">▲</span>
-      </div>
-      <div class="vote-comment-count">{{ likes - dislikes }}</div>
-      <div class="like-dislike">
-        <span (click)="dislikeComment()" class="dislike" [style.color]="userVote === 'Dislike' ? 'red' : ''">▼</span>
-      </div>
-    </div>
+<div class="vote-container">
+  <div class="vote-buttons">
+    <span (click)="likeComment()" class="like" *ngIf="userVote !== 1" [style.color]="userVote === 1 ? 'RoyalBlue' : ''">▲</span>
+    <span (click)="removeVote()" class="votes">{{ comment.counter }}</span>
+    <span (click)="dislikeComment()" class="dislike" *ngIf="userVote !== -1" [style.color]="userVote === -1 ? 'LightBlue' : ''">▼</span>
   </div>
+</div>
